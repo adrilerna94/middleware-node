@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { checkId } from '../middlewares/checkId';
 import { helloWorld, getUsers, createUser, getUsersPage, getUserById } from '../controllers/userController.js';
 
-export const userRouter = Router();
+const userRouter = Router();
 
 userRouter.get('/helloworld', helloWorld);
 userRouter.get('/', getUsers);
@@ -16,4 +16,4 @@ userRouter.get('/:id',
 );
 // userRouter.get('/user/:id?', getUserById);
 
-//export default userRouter;
+export default userRouter;
