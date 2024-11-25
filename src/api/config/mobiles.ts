@@ -1,5 +1,6 @@
 export const mobiles = [
   {
+      id: 1,
       model: "Samsung Galaxy S23",
       price: 999,
       screenSize: 6.1,
@@ -11,6 +12,7 @@ export const mobiles = [
       }
   },
   {
+      id: 2,
       model: "iPhone 14 Pro",
       price: 1099,
       screenSize: 6.1,
@@ -22,6 +24,7 @@ export const mobiles = [
       }
   },
   {
+      id: 3,
       model: "Xiaomi 13 Pro",
       price: 899,
       screenSize: 6.73,
@@ -33,6 +36,7 @@ export const mobiles = [
       }
   },
   {
+      id: 4,
       model: "OnePlus 11",
       price: 799,
       screenSize: 6.7,
@@ -44,6 +48,7 @@ export const mobiles = [
       }
   },
   {
+      id: 5,
       model: "Google Pixel 7 Pro",
       price: 899,
       screenSize: 6.7,
@@ -55,6 +60,7 @@ export const mobiles = [
       }
   },
   {
+      id: 6,
       model: "Sony Xperia 1 V",
       price: 1199,
       screenSize: 6.5,
@@ -66,6 +72,7 @@ export const mobiles = [
       }
   },
   {
+      id: 7,
       model: "Asus ROG Phone 7",
       price: 999,
       screenSize: 6.78,
@@ -77,6 +84,7 @@ export const mobiles = [
       }
   },
   {
+      id: 8,
       model: "Motorola Edge 40 Pro",
       price: 899,
       screenSize: 6.67,
@@ -88,6 +96,7 @@ export const mobiles = [
       }
   },
   {
+      id: 9,
       model: "Realme GT 3",
       price: 649,
       screenSize: 6.74,
@@ -99,6 +108,7 @@ export const mobiles = [
       }
   },
   {
+      id: 10,
       model: "Honor Magic 5 Pro",
       price: 1199,
       screenSize: 6.81,
@@ -110,6 +120,7 @@ export const mobiles = [
       }
   },
   {
+      id: 11,
       model: "Samsung Galaxy Z Fold 5",
       price: 1799,
       screenSize: 7.6,
@@ -121,6 +132,7 @@ export const mobiles = [
       }
   },
   {
+      id: 12,
       model: "Samsung Galaxy Z Flip 5",
       price: 999,
       screenSize: 6.7,
@@ -132,6 +144,7 @@ export const mobiles = [
       }
   },
   {
+      id: 13,
       model: "iPhone 14 Plus",
       price: 899,
       screenSize: 6.7,
@@ -143,6 +156,7 @@ export const mobiles = [
       }
   },
   {
+      id: 14,
       model: "Vivo X90 Pro",
       price: 1199,
       screenSize: 6.78,
@@ -154,6 +168,7 @@ export const mobiles = [
       }
   },
   {
+      id: 15,
       model: "Oppo Find X6 Pro",
       price: 1299,
       screenSize: 6.82,
@@ -165,6 +180,7 @@ export const mobiles = [
       }
   },
   {
+      id: 16,
       model: "Nokia G60 5G",
       price: 299,
       screenSize: 6.58,
@@ -176,6 +192,7 @@ export const mobiles = [
       }
   },
   {
+      id: 17,
       model: "Poco F5",
       price: 379,
       screenSize: 6.67,
@@ -187,6 +204,7 @@ export const mobiles = [
       }
   },
   {
+      id: 18,
       model: "Redmi Note 12 Pro+",
       price: 449,
       screenSize: 6.67,
@@ -198,6 +216,7 @@ export const mobiles = [
       }
   },
   {
+      id: 19,
       model: "Lenovo Legion Y90",
       price: 799,
       screenSize: 6.92,
@@ -209,6 +228,7 @@ export const mobiles = [
       }
   },
   {
+      id: 20,
       model: "Black Shark 5 Pro",
       price: 679,
       screenSize: 6.67,
