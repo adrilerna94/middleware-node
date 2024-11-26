@@ -1,4 +1,16 @@
-export const mobiles = [
+//definir tipos
+export const mobiles : {
+  id: number,
+  model: string,
+  price: number,
+  screenSize:number,
+  ram:number,
+  cpu : {
+    cores:number,
+    processorFrequency:string,
+    gpuName:string
+  };
+}[]= [
   {
       id: 1,
       model: "Samsung Galaxy S23",
