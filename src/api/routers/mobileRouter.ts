@@ -6,8 +6,9 @@ import { validateMobile } from "../middlewares/validateMobile";
 
 export const router = Router();
 
+// no hace falta poner create/update/delete porque ya el mismo tipo de método hTTP nos lo indica.
 router.get('/', getAllMobiles);
 router.get('/:id', checkId, getMobileById);
-router.post('/create', validateMobile, createMobile);
-router.put('/update/:id', checkId, updateMobile);
-router.delete('/delete/:id', checkId, deleteMobile);
+router.post('/', validateMobile, createMobile);
+router.put('/:id', checkId, updateMobile);
+router.delete('/:id', checkId, deleteMobile);
