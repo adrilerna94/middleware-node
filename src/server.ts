@@ -14,6 +14,7 @@ const port = process.env.HOST_PORT ?? '3000';
 // API Router
 //app.use('/api', apiRouter);
 
+
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
