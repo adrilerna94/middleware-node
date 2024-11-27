@@ -1,6 +1,7 @@
 import {type Request, type Response} from 'express';
-import { mobiles } from '../config/mobiles';
+import { mobiles } from '../data/mobiles';
 import { httpStatus } from '../config/httpStatusCodes';
+import { checkId } from '../middlewares/checkId';
 
 
 // (GET)
@@ -9,55 +10,36 @@ export const getAllMobiles = (req:Request, res:Response) => {
   res.json(mobiles);
 };
 
+
+let currentId = 1;
 //(POST)
 export const createMobile = (req: Request, res: Response) => {
-  // necesitaremos app.use(express.json()) ==> Per obtenir el body en format json
 
-  // necesitaríamos archivo a parte para hacer validaciones de cada propiedad
-  // y posteriormente validar que estan todas las propiedades con sus valores definidos
-  const {model} = req.body;
-  const {price} = req.body;
-  const {screenSize} = req.body;
-  const {ram} = req.body;
+  // Capturamos el objeto por el body. ya validado por el middleware
+  const mobile = req.body;
+  // Generar un nuevo objeto con un ID único. se añadirá siempre al ultimo id
+  const newMobile = { id: currentId++, ...mobile };
 
-  // desestructuración en 2 pasos si necesitas acceder a las propiedades de cpu
-  const {cpu} = req.body; // desestructuro mobiles array para acceder a objeto cpu
-  const {cores, gpuName, processorFrequency} = cpu; //desestrurizamos cpu propiedad (orden no importa--accedes a través de propiedades)
-
-
-  // desestructuración en 1 paso si necesitas solo cpu como objeto completo
-  //const { cpu: { cores, gpuName, processorFrequency } } = req.body;
-
-  //HACEMOS LAS VALIDACIONES PERTINENTES
-  /*
-    - ¿QUE HAREMOS?
-      - una función que valide cada propiedad (model, price, screenSize).
-      - En CPU validaremos cada propiedad del objeto CPU y que a su vez tenga todas propiedades válidas-
-      - una función que agrupe todas las validaciones de todos las propiedades y compruebe que todo el objeto mobile que se quiera crear sea correcto.
-      MIDDLEWARE
-      - Validar el id y usarlo en app.get('/mobile/:id', validateIdMidd, getMobileById)
-    - ¿Que validaremos en cada propiedad ?
-      - NOT NULL --> !model  / !price ..
-      - VALIDAR EL TIPO DE DATO -> Ejemplo: Number.isInteger(req.params.id) /
-      - Validar nombre de la propiedad sea correcta. res:  es incorrecta decir que no existe.
-  */
-
-  // ej validacion !propiedad -> NOT NULL
-  if (!model) {
-    return res.status(400).json({ message: "El campo 'model' es requerido" });
+  try {
+    mobiles.push(newMobile); //añadimos al array global de mobiles
+    // enviamos respuesta al cliente
+    res.status(201).json({
+      message: `Mobile with model : ${mobile.model} was added succesfully!`,
+      data: mobile,
+    });
+  } catch (error) {
+    // capturamos el error del servidor
+    res.status(500).json({
+      message:'Failes to add mobile',
+      error: error.message,
+    });
   }
-  // SI LA FUNCION VALIDADORA GENERAL IS TRUE
-  const mobile = {id : mobiles.length + 1, model, price, screenSize, ram, cpu : {cores, gpuName, processorFrequency}};
-  // con spread operator
-  // const newMobile = [...mobiles, mobile]; // expando array mobiles y agrego al final objeto mobile --> hago una copia del array y lo guardo en otro array.
-
-  mobiles.push(mobile); // añadimos newMobile al final del array // modifico el array original mobiles
-  //res.status(201) //otra forma de hacerlo sin una librería o array httpStatusCodes.
-  res.status(httpStatus.created).json(mobile);
 
 };
 
 // leer solo 1 mobile por ID (GET)
+
+// utilizaremos el checkId middleware
 export const getMobileById = (req: Request , res: Response) => {
   const {id} = req.params;
   const mobile = mobiles.find((mobile) => mobile.id === parseInt(id));
@@ -68,49 +50,56 @@ export const getMobileById = (req: Request , res: Response) => {
 };
 
 //(PUT) --> Actualizar un mobile
-export const updateMobile = (req: Request, res: Response) => {
-  const {id} = req.params; // recogemos de la url de la request
-  const {model} = req.body;
-  const {price} = req.body;
-  const {screenSize} = req.body;
-  const {ram} = req.body;
-  const {cpu} = req.body;
-  const {cores, gpuName, processorFrequency} = cpu;
 
-  //buscamos si el id de la url coincide con algun id de mobiles con findIndex
+// USAREMOS CHECKID para validarlo como middleware antes
+export const updateMobile = (req: Request, res: Response) => {
+
+  const {id} = req.params; // recogemos el id de la URL
+
+  // guardamos el req body en variable
+  const mobileToUpdate = req.body;
+
+  // Encontrar el índice del móvil en el array
   const mobileIndex = mobiles.findIndex((mobile) => mobile.id === Number(id));
   if(mobileIndex === -1){
     return res.status(404).json({ERROR: `mobile not found with ID: ${id}`})
   }
-  if (!model) {
-    return res.status(400).json({required : `${model} is required`});
-  }
-  mobiles[mobileIndex].model = model;
-  mobiles[mobileIndex].price = price;
+  // Actualizamos móvil en el array con datos nuevos --> {...} desestructurizamos por seguridad.
+  // Nos aseguramos de que el id del objeto existente no se modifique,
+  // incluso si el cliente incluye un id diferente en el cuerpo de la solicitud.
+  // Si el cliente no envía todas las propiedades del objeto (como model o price), esas propiedades se perderán.
 
-  const mobileUpdated = mobiles[mobileIndex];
+  mobiles[mobileIndex] = {...mobiles[mobileIndex], ...mobileToUpdate, id: mobiles[mobileIndex].id};
 
-  res.json(mobileUpdated);
+  // Devolver el móvil actualizado
+  res.status(200).json({
+    message: `Mobile with ID: ${id} was updated successfully.`,
+    data: mobiles[mobileIndex],
+  });
 };
 
+
+// FALTA CHECKEAR
 // eliminar un elemento (DELETE)
-export const deleteItem = (req: Request, res: Response) => {
-  const {id} = req.params;
+export const deleteMobile = (req: Request, res: Response) => {
+  const {id} = req.params; // ID url
+
+  // Encontrar el índice del móvil en el array
   const mobileIndex = mobiles.findIndex((x) => x.id === Number(id));
+
+  // Si no se encuentra el móvil, devolver un error 404
   if (mobileIndex === -1) {
-    return res.status(404).json({ERROR: `mobile not found with ID: ${id}`})
-  }
-  const deletedMobile= mobiles.splice(mobileIndex,1);
-  if (deletedMobile.length > 0) { // nos aseguramos de que se realmente se eliminó
-    // Respondemos con un objeto más detallado
-    res.json({
-        message: 'Mobile deleted successfully!',
-        deletedMobile: deletedMobile[0], // Incluimos el objeto eliminado directamente
-    });
-  } else {
-    // En caso de no encontrar el índice, devolvemos un error
-    res.status(404).json({
-        message: 'Mobile not found. No deletion occurred.',
+    return res.status(404).json({
+      error: `mobile not found with ID: ${id}`,
     });
   }
+  //elmininar mobile y capturarlo desestructurizando el array.
+  const [deletedMobile]= mobiles.splice(mobileIndex,1);
+
+  // responder con el objeto eliminado
+  res.status(200).json({
+    message: 'Mobile deleted successfully!',
+    deletedMobile,
+  });
+
 }

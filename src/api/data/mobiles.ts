@@ -1,16 +1,7 @@
+import { Mobile } from "../interfaces/mobile.interface";
+
 //definir tipos
-export const mobiles : {
-  id: number,
-  model: string,
-  price: number,
-  screenSize:number,
-  ram:number,
-  cpu : {
-    cores:number,
-    processorFrequency:string,
-    gpuName:string
-  };
-}[]= [
+export const mobiles : Mobile []= [
   {
       id: 1,
       model: "Samsung Galaxy S23",
