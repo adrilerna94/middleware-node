@@ -1,7 +1,5 @@
 import {type Request, type Response} from 'express';
 import { mobiles } from '../data/mobiles';
-import { httpStatus } from '../config/httpStatusCodes';
-import { checkId } from '../middlewares/checkId';
 
 
 // (GET)
@@ -41,7 +39,7 @@ export const createMobile = (req: Request, res: Response) => {
 
 // utilizaremos el checkId middleware
 export const getMobileById = (req: Request , res: Response) => {
-  const {id} = req.params;
+  const id = res.locals.id; // recogemos el id del middleware checkId
   const mobile = mobiles.find((mobile) => mobile.id === parseInt(id));
   if (!mobile) {
     return res.status(404).json({ERROR: `Mobile with ID: ${id} not found`});
@@ -54,7 +52,7 @@ export const getMobileById = (req: Request , res: Response) => {
 // USAREMOS CHECKID para validarlo como middleware antes
 export const updateMobile = (req: Request, res: Response) => {
 
-  const {id} = req.params; // recogemos el id de la URL
+  const id = res.locals.id; // recogemos el id del middleware checkId
 
   // guardamos el req body en variable
   const mobileToUpdate = req.body;
