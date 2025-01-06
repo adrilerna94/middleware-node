@@ -84,6 +84,8 @@ export const updateMobile = (req: Request, res: Response) => {
   //mobiles[mobileIndex] = {...mobiles[mobileIndex], ...mobileToUpdate, id: mobiles[mobileIndex].id};
   mobiles[mobileIndex] = mobileToUpdate;
 
+
+
   // Devolver el móvil actualizado
   res.status(200).json({
     message: `Mobile with ID: ${id} was updated successfully.`,

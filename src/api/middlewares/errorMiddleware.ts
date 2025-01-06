@@ -11,3 +11,4 @@ const errorMiddleware = (err: Error, req: Request, res: Response) => {
 };
 
 export default errorMiddleware;
+
